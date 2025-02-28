@@ -12,11 +12,16 @@ function initMap() {
 
   map = new kakao.maps.Map(mapContainer, mapOption);
 
-  fetch("/api/parking-lots")
+  fetch("/map/api/parking-lots")
     .then((response) => response.json())
     .then((data) => {
-      parkingData = data; // 모든 주차장 데이터 저장
-      console.log("✅ 전체 주차장 데이터:", parkingData);
+      parkingData = data.map(lot => ({
+        ...lot,
+        lat: parseFloat(lot.latitude || lot.lat || 0),  // 🚀 latitude → lat 변환
+        lng: parseFloat(lot.longitude || lot.lng || 0)  // 🚀 longitude → lng 변환
+      }));
+  
+      console.log("✅ 변환된 주차장 데이터:", parkingData);
       updateVisibleParkingLots(); // 초기 필터링
     })
     .catch((error) =>
@@ -75,6 +80,11 @@ function updateVisibleParkingLots() {
 
   let bounds = map.getBounds(); // 📌 현재 지도에 보이는 영역 가져오기
   let visibleLots = parkingData.filter((lot) => {
+    if (!lot.lat || !lot.lng) return false; // lat, lng 값이 없으면 제외
+    
+    let lat = parseFloat(lot.lat); // 🚀 문자열 → 숫자로 변환
+    let lng = parseFloat(lot.lng); // 🚀 문자열 → 숫자로 변환
+
     let position = new kakao.maps.LatLng(lot.lat, lot.lng);
     return bounds.contain(position);
   });
@@ -104,9 +114,17 @@ function updateMarkers(parkingLots) {
   clearMarkers(); // 기존 마커 삭제
 
   parkingLots.forEach((lot) => {
+    if (!lot.lat || !lot.lng) {
+      console.warn(`❌ 주차장 데이터 오류: ${lot.name}의 lat/lng 값이 없음`, lot);
+      return;
+    }
+
+    let markerPosition = new kakao.maps.LatLng(lot.lat, lot.lng);
+    console.log(`📍 마커 추가: ${lot.name} (${lot.lat}, ${lot.lng})`);
+
     let marker = new kakao.maps.Marker({
       map: map,
-      position: new kakao.maps.LatLng(lot.lat, lot.lng),
+      position: markerPosition,
       title: lot.name,
     });
 
@@ -203,7 +221,7 @@ function showToggle(lot) {
 }
 
 // 🚀 닫기 버튼 클릭 시 다시 숨김
-document.getElementById("toggle-close").addEventListener("click", function () {
+  document.getElementById("toggle-close").addEventListener("click", function () {
   document.getElementById("toggle-container").style.bottom = "-250px";
 });
 
