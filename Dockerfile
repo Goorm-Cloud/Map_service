@@ -16,7 +16,7 @@ COPY config.py config.py
 ENV FLASK_APP=app.py
 ENV FLASK_ENV=production
 
-RUN export $(grep -v '^#' .env | xargs)
+RUN export $(grep -v '^#' .env | sed 's/ *= */=/g' | tr '\n' ' ')
 
 EXPOSE 8002
 
