@@ -104,7 +104,7 @@ pipeline {
                     sh "git log -n 5 --oneline"
 
                     // 이미지 태그 변경 (빌드 번호 적용)
-                    sh "sed -i 's@image:.*@image: ${ECR_REGISTRY}/${ECR_REPO}:${currentBuild.number}@g' reservation.yaml"
+                    sh "sed -i 's@image:.*@image: ${ECR_REGISTRY}/${ECR_REPO}:${currentBuild.number}@g' map-service.yaml"
 
                     // 변경 사항 반영
                     sh "git add ."
