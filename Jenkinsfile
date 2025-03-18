@@ -8,7 +8,7 @@ pipeline {
         GITNAME = 'rttitity'
         GITMAIL = 'jinwoo25803@gmail.com'
         GITWEBADD = 'https://github.com/Goorm-Cloud/Map_service.git'
-        GITSSHADD = 'git@github.com:Goorm-Cloud/manifast-map.git'
+        GITSSHADD = 'git@github.com:Goorm-Cloud/manifest-map.git'
         GITCREDENTIAL = 'git_cre_zinucha'
         ECR_REGISTRY = '651706756261.dkr.ecr.ap-northeast-2.amazonaws.com'
         ECR_REPO = 'map_service'
@@ -30,7 +30,7 @@ pipeline {
                 script {
                     withCredentials([
                         file(credentialsId: 'config_secret', variable: 'CONFIG_FILE'),
-                        file(credentialsId: 'env_secret', variable: 'ENV_FILE')
+                        file(credentialsId: 'zinu_env_secret', variable: 'ENV_FILE')
                     ]) {
                         sh 'cp $CONFIG_FILE config.py'
                         sh 'cp $ENV_FILE .env'
