@@ -44,10 +44,23 @@
     <!-- 🚀 하단 슬라이드업 정보 창 -->
     <div id="toggle-container">
         <button id="toggle-close">X</button>
-        <h3 id="toggle-title">주차장 정보</h3>
-        <p id="toggle-address"></p>
-        <p id="toggle-hours"></p>
-        <a id="detail-button" href="#">상세보기</a>  <!-- 주차장 상세 보기 버튼 -->
+        <div id="toggle-content" style="display: flex; justify-content: space-between; gap: 10px;">
+      
+            <!-- 왼쪽 영역: 주차장 정보 + 상세보기 -->
+            <div id="toggle-left" style="width: 38%; text-align: center;">
+                <h3 id="toggle-title">주차장 정보</h3>
+                <p id="toggle-address"></p>
+                <p id="toggle-hours"></p>
+                <a id="detail-button" href="#" class="btn btn-primary">상세보기</a>
+            </div>
+  
+            <!-- 오른쪽 영역: 추천 정보 -->
+            <div id="toggle-right" style="width: 60%;">
+                <h5>📍 주변 추천 장소</h5>
+                <p id="recommendation-result">추천 정보를 불러오는 중...</p>
+            </div>
+  
+        </div>
     </div>
 
     <!-- Bootstrap JS -->

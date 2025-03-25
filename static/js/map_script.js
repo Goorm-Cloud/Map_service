@@ -205,6 +205,28 @@ function showToggle(lot) {
       "/admin/parkinglot/edit/" + lot.id;
   }
 
+  // 👉 Claude 추천 API 호출
+  const recommendationText = document.getElementById("recommendation-result");
+  recommendationText.innerText = "로딩 중...";
+
+  fetch(`http://localhost:5001/recommend?lat=${lot.lat}&lng=${lot.lng}`)
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.error) {
+        recommendationText.innerText = "추천 정보를 불러올 수 없습니다.";
+      } else {
+        const places = data.places;
+        recommendationText.innerText =
+          `☕️ : ${places["카페"].join(", ")}\n` +
+          `🍽️ : ${places["음식점"].join(", ")}\n` +
+          `🏛️ : ${places["관광명소"].join(", ")}`;
+      }
+    })
+  .catch((err) => {
+    console.error(err);
+    recommendationText.innerText = "서버 오류로 불러오지 못했습니다.";
+  });
+
   document.getElementById("toggle-container").style.bottom = "0px"; // 화면 위로 슬라이드업
 }
 
