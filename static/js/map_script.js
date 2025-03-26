@@ -209,7 +209,7 @@ function showToggle(lot) {
   const recommendationText = document.getElementById("recommendation-result");
   recommendationText.innerText = "로딩 중...";
 
-  fetch(`http://localhost:8005/recommend?lat=${lot.lat}&lng=${lot.lng}`)
+  fetch(`/recommend?lat=${lot.lat}&lng=${lot.lng}`)
     .then((res) => res.json())
     .then((data) => {
       if (data.error) {
